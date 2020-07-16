@@ -4,14 +4,66 @@ import kotlin.random.Random
 import java.util.Scanner
 import kotlin.math.round
 
-const val X = 'X'
-
 fun main() {
     val scanner = Scanner(System.`in`)
     print("How many mines do you want on the field? ")
-    val minefield = addMineHints(createMinefield(totalMines = scanner.nextInt()))
-    for (line in minefield) {
-        println(line)
+    // Create and print minefield
+    val totalMines = scanner.nextInt()
+    val minefield = addMineHints(createMinefield(totalMines))
+    printMinefield(minefield)
+    // Start game
+    startMineSweeper(scanner, minefield, totalMines)
+}
+
+fun startMineSweeper(scanner: Scanner, minefield: Array<CharArray>, totalMines: Int) {
+    var marksCount = 0
+    var mineMarksCount = 0
+    loop@ while (true) {
+        // Get mark coordinates
+        print("Set/delete mines marks (x and y coordinates): ")
+        val x = scanner.nextInt() - 1
+        val y = scanner.nextInt() - 1
+        // Mark or un-mark field cell
+        when (minefield[y][x]) {
+            in '1'..'8' -> {
+                println("There is a number here!")
+                continue@loop
+            }
+            'X' -> {
+                minefield[y][x] = '*'
+                marksCount++
+                mineMarksCount++
+            }
+            '.' -> {
+                minefield[y][x] = '*'
+                marksCount++
+            }
+            '*' -> {
+                minefield[y][x] = '.'
+                marksCount--
+            }
+        }
+        // Check end game
+        if (mineMarksCount == totalMines && mineMarksCount == marksCount) {
+            return println("Congratulations! You found all the mines!")
+        }
+        // Print minefield with new state
+        printMinefield(minefield)
+    }
+}
+
+fun printMinefield(minefield: Array<CharArray>) {
+    for (i in 0..8) {
+        if (i == 0) {
+            println(" │123456789│")
+            println("—│—————————│")
+        }
+        print("${i + 1}│")
+        print(minefield[i].joinToString("").replace('X', '.'))
+        println("│")
+        if (i == 8) {
+            println("—│—————————│")
+        }
     }
 }
 
@@ -21,7 +73,7 @@ fun addMineHints(field: Array<CharArray>): Array<CharArray> {
         for (x in range) {
             val currentCell = field[y][x]
             // Skip checking if current cell has a mine
-            if (currentCell == X) {
+            if (currentCell == 'X') {
                 continue
             }
             // Get around cells' values and add them to an array
@@ -41,7 +93,7 @@ fun addMineHints(field: Array<CharArray>): Array<CharArray> {
             // Check mines around the cell
             var minesCount = 0
             for (cell in aroundCells) {
-                if (cell == X) {
+                if (cell == 'X') {
                     minesCount++
                 }
             }
@@ -70,10 +122,10 @@ fun createMinefield(totalMines: Int): Array<CharArray> {
             while (mines > 0) {
                 if (usedMines == totalMines) break
                 var pos = Random.nextInt(0, 8)
-                while (line[pos] == X) {
+                while (line[pos] == 'X') {
                     pos = Random.nextInt(0, 8)
                 }
-                line[pos] = X
+                line[pos] = 'X'
                 usedMines++
                 mines--
             }
