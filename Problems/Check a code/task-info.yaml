@@ -1,0 +1,26 @@
+type: code
+files:
+- name: src/Task.kt
+  visible: true
+  text: |-
+    class Event(val id: Int, val x: Int, val y: Int, val isLongClick: Boolean) {
+        operator fun component1() : Int = y
+        operator fun component2() = x
+        operator fun component3() : Boolean = isLongClick
+        operator fun component4() : Int = id
+    }
+
+    fun isEventLongClicked(events: Array<Event>, eventId: Int): Boolean? {
+        for ((id, x, y, isLongClick) in events) {
+            if ( id == eventId) return isLongClick
+        }
+        return null
+    }
+  learner_created: false
+feedback_link: https://hyperskill.org/learn/step/9052
+status: Solved
+feedback:
+  message: <html>Correct solution<br/><br/>Continue on <a href="https://hyperskill.org/learn/step/9052">JetBrains
+    Academy</a></html>
+  time: Mon, 20 Jul 2020 20:30:11 UTC
+record: -1

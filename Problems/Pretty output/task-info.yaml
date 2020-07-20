@@ -1,0 +1,18 @@
+type: code
+files:
+- name: src/Task.kt
+  visible: true
+  text: |-
+    data class Comment(val id: Int, val body: String, val author: String)
+
+    fun printComments(commentsData: Array<Comment>){
+        // write you code here
+    }
+  learner_created: false
+feedback_link: https://hyperskill.org/learn/step/9054
+status: Solved
+feedback:
+  message: <html>Correct solution<br/><br/>Continue on <a href="https://hyperskill.org/learn/step/9054">JetBrains
+    Academy</a></html>
+  time: Mon, 20 Jul 2020 20:27:34 UTC
+record: -1
